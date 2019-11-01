@@ -1,0 +1,63 @@
+clone:
+  git:
+    image: registry-vpc.cn-qingdao.aliyuncs.com/wod-devops/git:1.4.0
+
+pipeline:
+  read-cache:
+    image: registry-vpc.cn-qingdao.aliyuncs.com/wod-devops/cache:latest
+    restore: true
+    mount:
+      - ./node_modules
+    volumes:
+      - /cache:/cache
+  build:
+    image: registry-vpc.cn-qingdao.aliyuncs.com/wod-devops/node:8.12.0-alpine
+    volumes:
+      - /cache/yarn:/usr/local/share/.cache/yarn/v1    
+    commands:
+      - yarn install
+      - yarn run build
+  store-cache:
+    image: registry-vpc.cn-qingdao.aliyuncs.com/wod-devops/cache:latest
+    rebuild: true
+    mount:
+      - ./node_modules 
+    volumes:
+      - /cache:/cache
+  docker-dev:
+    image: registry-vpc.cn-qingdao.aliyuncs.com/wod-devops/docker:1.0
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock    
+    base: registry-vpc.cn-qingdao.aliyuncs.com/wod-cloud/awecloud-ui-base:1.0.1
+    repo: wod-cloud/jgsw-ui
+    tag: 1.0.1-alpha
+    registry: registry-vpc.cn-qingdao.aliyuncs.com
+    secrets: 
+      - source: REGISTRY_USER_ALIYUN
+        target: REGISTRY_USER
+      - source: REGISTRY_PASSWORD_ALIYUN
+        target: REGISTRY_PASSWORD    
+    when:
+      branch: dev
+  docker-master:
+    image: registry-vpc.cn-qingdao.aliyuncs.com/wod-devops/docker:1.0
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock    
+    base: registry-vpc.cn-qingdao.aliyuncs.com/wod-cloud/awecloud-ui-base:1.0.1
+    repo: wod-cloud/jgsw-ui
+    registry: registry-vpc.cn-qingdao.aliyuncs.com
+    secrets: 
+      - source: REGISTRY_USER_ALIYUN
+        target: REGISTRY_USER
+      - source: REGISTRY_PASSWORD_ALIYUN
+        target: REGISTRY_PASSWORD    
+    when:
+      branch: master  
+  deploy:
+    image: registry-vpc.cn-qingdao.aliyuncs.com/wod-devops/kubernetes:1.0
+    namespace: cloud
+    deployment: jgsw-ui
+    container: jgsw-ui
+    registry: registry-vpc.cn-qingdao.aliyuncs.com
+    when:
+      branch: [master,dev]

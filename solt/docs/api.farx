@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<AutoResponder LastSave="2018-04-21T17:18:19.4349974+08:00" FiddlerVersion="5.0.20173.50948">
+  <State Enabled="true" Fallthrough="true" UseLatency="false">
+    <ResponseRule Match="EXACT:http://localhost:8080/rest/harbor/api/projects" Action="C:\Git\cloud\awecloud-ui\docs\harbor_api_projects.json" Enabled="true" />
+    <ResponseRule Match="EXACT:http://localhost:8080/rest/harbor/api/projects/3" Action="C:\Git\cloud\awecloud-ui\docs\harbor_api_projects_3.json" Enabled="true" />
+    <ResponseRule Match="regex:http://localhost:8080/rest/harbor/api/repositories/(.*?)/tags" Action="C:\Git\cloud\awecloud-ui\docs\harbor_api_repositories_cig_rest_tags.json" Enabled="true" />
+    <ResponseRule Match="regex:http://localhost:8080/rest/harbor/api/repositories(.*?)" Action="C:\Git\cloud\awecloud-ui\docs\harbor_api_repositories.json" Enabled="true" />
+    <ResponseRule Match="regex:http://localhost:8080/rest/kubernetes/api/v1/node(.*?)" Action="C:\Git\cloud\awecloud-ui\docs\k8s_api_v1_node.json" Enabled="true" />
+    <ResponseRule Match="EXACT:http://localhost:8080/rest/kubernetes/api/v1/node" Action="C:\Git\cloud\awecloud-ui\docs\k8s_api_v1_node.json" Enabled="true" />
+    <ResponseRule Match="EXACT:http://localhost:8080/rest/kubernetes/api/v1/node/172.16.11.241" Action="C:\Git\cloud\awecloud-ui\docs\k8s_api_v1_node_192.168.74.101.json" Enabled="true" />
+    <ResponseRule Match="EXACT:http://localhost:8080/api/v4/user" Action="C:\Git\cloud\awecloud-ui\docs\gitlab_api_v4_user.json" Enabled="true" />
+  </State>
+</AutoResponder>
